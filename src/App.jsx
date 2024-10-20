@@ -20,12 +20,12 @@ const App = () => {
     
         console.log(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`); 
     
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`, {
+        const response = await axios.post(`https://backimps-production.up.railway.app/services/createDefaultUsers`, {
           adminEmail: adminEmail,
           headEmail: headEmail
         });
     
-        console.log(adminEmail);
+        console.log(adminEmail);  
         console.log(response.data);
       } catch (error) {
         console.error("Error creating default users", error);
