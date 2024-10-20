@@ -90,7 +90,7 @@ const Login = () => {
                           console.log(error);
                       });
               } else {
-                  infoPop('There is no account that matches those credentials. Please register.');
+                  infoPop('There is no that matches those credentials. Please register.');
               }
               console.log(data);
           })
