@@ -16,9 +16,9 @@ const App = () => {
       try {
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
-        
+    
         console.log("https://backimps-production.up.railway.app/services/createDefaultUsers");
-
+    
         const response = await fetch("https://backimps-production.up.railway.app/services/createDefaultUsers", {
           method: 'POST',
           headers: {
@@ -29,18 +29,20 @@ const App = () => {
             headEmail: headEmail
           }),
         });
-
+    
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorData = await response.json(); // Get the error response
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error}`);
         }
-
+    
         const data = await response.json();
         console.log(adminEmail);
-        console.log(data);
+        console.log(data.message); // Log the success message
       } catch (error) {
         console.error("Error creating default users", error);
       }
     };
+    
 
     createDefaultUsers();
   }, []);
