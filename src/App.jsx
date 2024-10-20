@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
 
 import Adminpage from './pages/Admin/Adminpage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
@@ -10,6 +8,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import Staffpage from './pages/Staffpage/Staffpage';
 import Headpage from './pages/Headpage/Headpage';
+
 const App = () => {
 
   useEffect(() => {
@@ -17,21 +16,31 @@ const App = () => {
       try {
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
-    
-        console.log(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`); 
-    
-        const response = await axios.post(`https://backimps-production.up.railway.app/services/createDefaultUsers`, {
-          adminEmail: adminEmail,
-          headEmail: headEmail
+        
+        console.log(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`);
+
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            adminEmail: adminEmail,
+            headEmail: headEmail
+          }),
         });
-    
-        console.log(adminEmail);  
-        console.log(response.data);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(adminEmail);
+        console.log(data);
       } catch (error) {
         console.error("Error creating default users", error);
       }
     };
-    
 
     createDefaultUsers();
   }, []);
