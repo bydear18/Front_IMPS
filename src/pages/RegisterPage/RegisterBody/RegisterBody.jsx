@@ -127,21 +127,21 @@ const RegisterBody = () => {
         }
     
         // Check for existing email
-        fetch(`http://localhost:8080/services/exists?email=${email}`, requestOptionsGET)
+        fetch(`https://backimps-production.up.railway.app/services/exists?email=${email}`, requestOptionsGET)
             .then((response) => response.json())
             .then((data) => {
                 if (data === true) {
                     infoPop('That email is already in use! Please use another email.');
                 } else {
                     // Check for existing school ID
-                    fetch(`http://localhost:8080/services/exists?schoolId=${schoolId}`, requestOptionsGET)
+                    fetch(`https://backimps-production.up.railway.app/services/exists?schoolId=${schoolId}`, requestOptionsGET)
                         .then((response) => response.json())
                         .then((data) => {
                             if (data === true) {
                                 infoPop('That School ID is already in use! Please use another School ID.');
                             } else {
                                 // Proceed with registration
-                                fetch(`http://localhost:8080/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
+                                fetch(`https://backimps-production.up.railway.app/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
                                     .then((response) => response.json())
                                     .then(() => {
                                         infoPop("Registration successful! Wait for admin's confirmation", true);
