@@ -20,10 +20,10 @@ const App = () => {
         const headEmail = "head@cit.edu";
 
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/services/createDefaultUsers`, {
-          adminEmail: adminEmail,
-          headEmail: headEmail
-        });
-        
+  adminEmail: adminEmail,
+  headEmail: headEmail
+});
+
         console.log(response.data);
       } catch (error) {
         console.error("Error creating default users", error);
