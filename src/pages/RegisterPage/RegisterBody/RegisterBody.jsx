@@ -127,37 +127,22 @@ const RegisterBody = () => {
         }
     
         // Check for existing email
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/services/exists?email=${email}`, requestOptionsGET)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+        fetch(`https://backimps-production.up.railway.app/services/exists?email=${email}`, requestOptionsGET)
+            .then((response) => response.json())
             .then((data) => {
                 if (data === true) {
                     infoPop('That email is already in use! Please use another email.');
                 } else {
                     // Check for existing school ID
-                    fetch(`${process.env.REACT_APP_BACKEND_URL}/services/exists?schoolId=${schoolId}`, requestOptionsGET)
-                        .then((response) => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
+                    fetch(`https://backimps-production.up.railway.app/services/exists?schoolId=${schoolId}`, requestOptionsGET)
+                        .then((response) => response.json())
                         .then((data) => {
                             if (data === true) {
                                 infoPop('That School ID is already in use! Please use another School ID.');
                             } else {
                                 // Proceed with registration
-                                fetch(`${process.env.REACT_APP_BACKEND_URL}/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
-                                    .then((response) => {
-                                        if (!response.ok) {
-                                            throw new Error('Network response was not ok');
-                                        }
-                                        return response.json();
-                                    })
+                                fetch(`https://backimps-production.up.railway.app/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
+                                    .then((response) => response.json())
                                     .then(() => {
                                         infoPop("Registration successful! Wait for admin's confirmation", true);
                                         // Clear form fields
@@ -172,6 +157,7 @@ const RegisterBody = () => {
                                         setCollege('');
                                         setOffice('');
                                         setEmployeeType('');
+                                        console.log(adminVerified);
                                     })
                                     .catch(error => {
                                         console.log(error);
@@ -181,16 +167,13 @@ const RegisterBody = () => {
                         })
                         .catch(error => {
                             console.log(error);
-                            infoPop('An error occurred while checking the School ID. Please try again.');
                         });
                 }
             })
             .catch(error => {
                 console.log(error);
-                infoPop('An error occurred while checking the email. Please try again.');
             });
     };
-    
     
 
     return (
