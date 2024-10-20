@@ -15,20 +15,23 @@ const App = () => {
   useEffect(() => {
     const createDefaultUsers = async () => {
       try {
-
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
-
+    
+        console.log(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`); 
+    
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`, {
           adminEmail: adminEmail,
           headEmail: headEmail
         });
-
+    
+        console.log(adminEmail);
         console.log(response.data);
       } catch (error) {
         console.error("Error creating default users", error);
       }
     };
+    
 
     createDefaultUsers();
   }, []);
