@@ -22,7 +22,7 @@ const App = () => {
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
 
-        const response = await axios.post('http://localhost:8080/services/createDefaultUsers', {
+        const response = await axios.post('http://backimps-production.up.railway.app/services/createDefaultUsers', {
           adminEmail: adminEmail,
           headEmail: headEmail
         });
