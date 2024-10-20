@@ -19,7 +19,7 @@ const App = () => {
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
 
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/services/createDefaultUsers`, {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`, {
   adminEmail: adminEmail,
   headEmail: headEmail
 });
