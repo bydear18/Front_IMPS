@@ -37,7 +37,7 @@ const Login = () => {
           },
       };
   
-      fetch("http://localhost:8080/services/userLogin?email=" + email + "&password=" + password, requestOptions)
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/services/userLogin?email=${email}&password=${password}`, requestOptions)
           .then((response) => response.json())
           .then((data) => {
               if (data.status === true) {
@@ -51,7 +51,7 @@ const Login = () => {
                   localStorage.setItem("isHead", isHead);
                   localStorage.setItem("isStaff", isStaff);
   
-                  fetch("http://localhost:8080/services/getname?email=" + email, requestOptions)
+                  fetch(`${process.env.REACT_APP_BACKEND_URL}/services/getname?email=${email}`, requestOptions)
                       .then((response) => response.json())
                       .then((data) => {
                           localStorage.setItem("firstName", data['firstName']);
@@ -59,35 +59,32 @@ const Login = () => {
                           localStorage.setItem("schoolId", data['schoolId']);
                           localStorage.setItem("role", data['role']);
                           localStorage.setItem("college", data['college']);
-                          
-
-                          fetch("http://localhost:8080/services/getid?email=" + email, requestOptions)
-                          .then((response) => response.json())
-                          .then((data) => {
-                              localStorage.setItem("userID", data['userID']);
-                            
-                              if (data['adminVerified'] === false) {
-                                  infoPop('Your account is not yet accepted by the admin');
-                                  
-                              } else {
-                                localStorage.setItem("isLoggedIn", true);
-                                if (data['role'] === 'admin') {
-                                  navigate('/admin');
-                                } else if (data['role'] === 'head') {
-                                    navigate('/head');
-                                } else if (data['role'] === 'staff') {
-                                    navigate('/staff');
-                                } else if (data['role'] === 'employee') {
-                                    localStorage.setItem("department", data['department']);
-                                    localStorage.setItem("schoolId", data['schoolId']);
-                                    navigate('/home');
-                                }
-                              }
-                          })
-                          .catch(error => {
-                              console.log(error);
-                          });
-                      
+  
+                          fetch(`${process.env.REACT_APP_BACKEND_URL}/services/getid?email=${email}`, requestOptions)
+                              .then((response) => response.json())
+                              .then((data) => {
+                                  localStorage.setItem("userID", data['userID']);
+  
+                                  if (data['adminVerified'] === false) {
+                                      infoPop('Your account is not yet accepted by the admin');
+                                  } else {
+                                      localStorage.setItem("isLoggedIn", true);
+                                      if (data['role'] === 'admin') {
+                                          navigate('/admin');
+                                      } else if (data['role'] === 'head') {
+                                          navigate('/head');
+                                      } else if (data['role'] === 'staff') {
+                                          navigate('/staff');
+                                      } else if (data['role'] === 'employee') {
+                                          localStorage.setItem("department", data['department']);
+                                          localStorage.setItem("schoolId", data['schoolId']);
+                                          navigate('/home');
+                                      }
+                                  }
+                              })
+                              .catch(error => {
+                                  console.log(error);
+                              });
                       })
                       .catch(error => {
                           console.log(error);
@@ -101,6 +98,7 @@ const Login = () => {
               console.log(error);
           });
   };
+  
   
   
   const handleClear = () => {
