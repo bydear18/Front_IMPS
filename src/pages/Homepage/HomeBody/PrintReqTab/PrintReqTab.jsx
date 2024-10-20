@@ -187,7 +187,7 @@ function PrintReq({ onRequestSubmitted }) {
             body: data,
         };
 
-        fetch("http://localhost:8080/requests/newRequest", requestOptions)
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/requests/newRequest`, requestOptions)
             .then(response => response.json())
             .then(() => {
                 if (comment) {
