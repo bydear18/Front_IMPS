@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import axios from 'axios';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 import Adminpage from './pages/Admin/Adminpage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
