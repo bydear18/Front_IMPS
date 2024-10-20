@@ -127,7 +127,7 @@ const RegisterBody = () => {
         }
     
         // Check for existing email
-        fetch(`https://backimps-production.up.railway.app/services/exists?email=${email}`, requestOptionsGET)
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/services/exists?email=${email}`, requestOptionsGET)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -139,7 +139,7 @@ const RegisterBody = () => {
                     infoPop('That email is already in use! Please use another email.');
                 } else {
                     // Check for existing school ID
-                    fetch(`https://backimps-production.up.railway.app/services/exists?schoolId=${schoolId}`, requestOptionsGET)
+                    fetch(`${process.env.REACT_APP_BACKEND_URL}/services/exists?schoolId=${schoolId}`, requestOptionsGET)
                         .then((response) => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
@@ -151,7 +151,7 @@ const RegisterBody = () => {
                                 infoPop('That School ID is already in use! Please use another School ID.');
                             } else {
                                 // Proceed with registration
-                                fetch(`https://backimps-production.up.railway.app/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
+                                fetch(`${process.env.REACT_APP_BACKEND_URL}/services/NewUserRegistration?firstName=${firstName}&lastName=${lastName}&password=${password}&email=${email}&schoolId=${schoolId}&role=${role}&adminVerified=${adminVerified}&college=${college}&department=${department}&office=${office}`, requestOptionsPOST)
                                     .then((response) => {
                                         if (!response.ok) {
                                             throw new Error('Network response was not ok');
