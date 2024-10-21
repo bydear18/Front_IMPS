@@ -17,9 +17,9 @@ const App = () => {
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
     
-        console.log("https://back-production-1f50.up.railway.app/services/createDefaultUsers");
+        console.log("https://https://backimps-production.up.railway.app/services/createDefaultUsers");
     
-        const response = await fetch("https://back-production-1f50.up.railway.app/services/createDefaultUsers", {
+        const response = await fetch("https://https://backimps-production.up.railway.app/services/createDefaultUsers", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
