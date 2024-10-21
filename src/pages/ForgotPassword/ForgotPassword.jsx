@@ -1,13 +1,15 @@
 
 
-import Navbar from '../../components/NavBar/Navbar';
+import Login from '../../components/NavBar/Login/Login';
+import LoginNavbar from '../../components/NavBar/LoginNavbar';
+
 import ForgotPassContent from './ForgotPasswordContent/ForgotPassContent';
 
 const ForgotPassword = () => {
 
   return (
     <div>
-      <Navbar/>
+      <LoginNavbar/>
       <ForgotPassContent/>
     </div>
     

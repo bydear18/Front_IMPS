@@ -39,7 +39,6 @@ function HomeBody () {
                 <div className={toggleState === 3 ? "tab active-tab" : "tab"} onClick={() => toggleTab(3)}>Pending Request</div>
                 <div className={toggleState === 4 ? "tab active-tab" : "tab"} onClick={() => toggleTab(4)}>Request History</div>
                 <div className={toggleState === 5 ? "tab active-tab" : "tab"} onClick={() => toggleTab(5)}>System Report</div>
-                <div className={toggleState === 6 ? "tab active-tab" : "tab"} onClick={() => toggleTab(6)}>Account</div>
             </div>
 
 
@@ -63,9 +62,6 @@ function HomeBody () {
                 <SystemReport/>
             </div>
 
-            <div className={toggleState === 6 ? "content active-content" : "content"} onClick={() => toggleTab(6)}>
-                <Account/>
-            </div>
 
             <img src={Wildcat}/>
         </div>

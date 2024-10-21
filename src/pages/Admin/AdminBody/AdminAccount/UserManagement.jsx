@@ -179,18 +179,6 @@ const UserManagement = () => {
       );
     }
     else if(rowData.role === 'employee' && rowData.adminVerified === true){
-        return (
-          <div>
-            <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
-              Edit
-            </button>
-            <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
-              Delete
-            </button>
-          </div>
-        );
-    }
-    else{
       return (
         <div>
           <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
@@ -201,6 +189,9 @@ const UserManagement = () => {
           </button>
         </div>
       );
+    }
+    else{
+
     }
 
   };
