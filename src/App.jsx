@@ -1,5 +1,10 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from 'react-router-dom';
 
 import Adminpage from './pages/Admin/Adminpage';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
@@ -8,35 +13,20 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import Staffpage from './pages/Staffpage/Staffpage';
 import Headpage from './pages/Headpage/Headpage';
-
 const App = () => {
 
   useEffect(() => {
     const createDefaultUsers = async () => {
       try {
+
         const adminEmail = "admin@cit.edu";
         const headEmail = "head@cit.edu";
-        
-        console.log(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`);
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/services/createDefaultUsers`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            adminEmail: adminEmail,
-            headEmail: headEmail
-          }),
+        const response = await axios.post('http://localhost:8080/services/createDefaultUsers', {
+          adminEmail: adminEmail,
+          headEmail: headEmail
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(adminEmail);
-        console.log(data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error creating default users", error);
       }

@@ -20,6 +20,7 @@ const History = ({reqHistory}) => {
     const [completeDisable, setCompleteDisable] = useState(false);
     const [commentDisabled, setCommentDisabled] = useState('hide');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [content, setContent] = useState([]);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }});
 
@@ -27,42 +28,36 @@ const History = ({reqHistory}) => {
     const [commentShow, setCommentShow] = useState('hide');
     const [buttonShow, setButtonShow] = useState('hide');
     const [statusClass, setStatusClass] = useState('reqStatRejected');
-
+    const [title, setTitle] = useState('');
     // Details
-    const [selectedComment, setSelectedComment] = useState(null);
     const [requestID, setRequestID] = useState();
+    const [bindType, setBindType] = useState('');
     const [department, setDepartment] = useState('');
-    const [email, setEmail] = useState('');
-    const [role, setRole] = useState('');
+    const [email,setEmail] = useState('');
     const [desc, setDesc] = useState('');
     const [fileName, setFileName] = useState('');
     const [giveExam, setGiveExam] = useState(false);
-    const [noOfCopies, setNoOfCopies] = useState(0);
+    const [noOfCopies,setNoOfCopies] = useState(0);
+    const [toStaple, setToStaple] = useState(false);
     const [colored, setColored] = useState(false);
+    const [colorType, setColorType] = useState('');
     const [useDate, setUseDate] = useState('');
     const [requestDate, setRequestDate] = useState('');
-    const [title, setTitle] = useState('');
     const [paperSize, setPaperSize] = useState('');
-    const [colorType, setColorType] = useState('');
-    const [paperType, setPaperType] = useState('');
     const [fileType, setFileType] = useState('');
     const [status, setStatus] = useState('');
     const [userID, setUserID] = useState('');
-    const [schoolId, setSchoolId]= useState('');
     const [comments, setComments] = useState([]);
-    const [content, setContent] = useState([]);
     const [requesterName, setRequesterName] = useState('');
     const [requesterEmail, setRequesterEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-    const [alert, setAlert] = useState('hide');
-    const [alertMsg, setAlertMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+    const [paperType, setPaperType] = useState('');
     // Comment Details
     const [commentHeader, setCommentHeader] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const [commentDate, setCommentDate] = useState('');
     const [editable, setEditable] = useState(true);
-
+    const [schoolId, setSchoolId]= useState('');
     const [downloadURL, setDownloadURL] = useState('');
 
     const getDate = () => {
@@ -113,7 +108,8 @@ const History = ({reqHistory}) => {
                     mode: 'cors',
                     body: commentData
                   };
-                fetch("http://localhost:8080/comments/newAdminComment", requestOptionsComment).then((response)=> response.json()
+                fetch("http://localhost:8080/comments/newComment", requestOptionsComment)
+                .then((response)=> response.json()
                                         ).then((data) => {
                                             fetch("http://localhost:8080/comments/id?id=" + requestID, requestOptions).then((response)=> response.json()
                                             ).then((data) => { 
@@ -204,17 +200,19 @@ const History = ({reqHistory}) => {
                 setDepartment(data['department']);
                 setFileType(data['fileType']);
                 setColored(data['color']);
+                setToStaple(data['stapled']);
                 setGiveExam(data['giveExam']);
                 setDesc(data['description']);
                 setRequestDate(data['requestDate']);
                 setUseDate(data['useDate']);
                 setRequestID(data['requestID']);
-                setNoOfCopies(data['noOfCopies']);
-                setColorType(data['colored']);
-                setPaperType(data['paperType']);
-                setPaperSize(data['paperSize']);
-                setUserID(data['userID']);
                 setSchoolId(data['schoolId']);
+                setColorType(data['colored']);
+                setNoOfCopies(data['noOfCopies']);
+                setBindType(data['bindType']);
+                setPaperSize(data['paperSize']);
+                setPaperType(data['paperType']);
+                setUserID(data['userID']);
                 setEmail(data['requesterEmail']);
                 setDownloadURL(data['downloadURL']);
                 setRequesterEmail(data['requesterEmail']);
@@ -223,7 +221,16 @@ const History = ({reqHistory}) => {
                 fetch("http://localhost:8080/records/requestid?id=" + event.data.requestID, requestOptions).then((response)=> response.json()
                 ).then((data) => { 
                     setStatus(data['status']);
- 
+                    if(data['status'] === 'Rejected'){
+                        setRejected('show');
+                        setCommentDisabled('hide');
+                    }else if (data['status'] === 'Completed'){
+                        setRejected('hide');
+                    }else{
+                        setRejected('show');
+                        setCommentDisabled('show');
+                    }
+
                     if (data['status'] === 'Rejected') {
                         setStatus('Rejected');
                         setStatusClass('capsuleRejected');
@@ -304,27 +311,39 @@ const History = ({reqHistory}) => {
         }
     };
 
+
     const statusBodyTemplate = (rowData) => {
         return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
     };
-
     useEffect(() => {
         const requestOptions = {
             method: 'GET',
             mode: 'cors',
             headers: {
-              'Content-Type': 'application/json',
-          },
-          };
-        
-        fetch("http://localhost:8080/records/all", requestOptions).then((response)=> response.json()
-        ).then((data) => { setValues(data);})
-        .catch(error =>
-            {
+                'Content-Type': 'application/json',
+            },
+        };
+    
+        fetch("http://localhost:8080/records/all", requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                const statusMap = {
+                    'Pending': 'Waiting for Approval',
+                    'In Progress': 'Approved for Printing',
+                    'Completed': 'Ready to Claim',
+                };
+
+                const updatedData = data.map(item => ({
+                    ...item,
+                    status: statusMap[item.status] || item.status, 
+                }));
+    
+                setValues(updatedData);
+                console.log(updatedData);
+            })
+            .catch((error) => {
                 console.log(error);
-            }
-        );
-        
+            });
     }, []);
 
     return(
@@ -374,13 +393,13 @@ const History = ({reqHistory}) => {
 
                     <div id='fourthLine'>
                         <p id='coloredBa'>Color Type:<p className='specText'>{colorType}</p>
-                            <div id='numberCopies' style={{marginBottom:'.5vw'}}>No. of Copies: <p className='specText'>{noOfCopies}</p>
+                            <div id='numberCopies' style={{marginBottom:'.5vw'}}># of Copies: <p className='specText'>{noOfCopies}</p>
                             </div>
                         </p>
                     </div>
                     <div id='fourthLine'>
                         <p id='coloredBa' style={{marginTop: '-1vw'}}>Paper Size:<p className='specText'>{paperSize}</p>
-                            <div id='numberCopies' style={{marginLeft: '2.9vw'}}> PaperType: <p className='specText'>{paperType}</p></div>
+                            <div id='numberCopies'>PaperType: <p className='specText'>{paperType}</p></div>
                         </p>
                     <br></br>
                     </div>
@@ -389,31 +408,31 @@ const History = ({reqHistory}) => {
                     <div className='infoLine'>Email: <div className='contactItem'>{requesterEmail}</div></div>
                     <div className='infoLine'>Department/Office/College: <div className='contactItem'>{department}</div></div>
 
+                    <div id="overlay" className = {commentShow} onClick={closeComment}></div>
+                    <div id="deetCommentBody" className ={commentShow}>
+                        <div id='commBod'>
+                            <p>{commentDate}</p>
+                            <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
+                            <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
+                        </div>
                     </div>
-                            
-                  
-                            <p id='additionalInstructions'>{title}</p>
-                            <textarea id='instruction' disabled='true' value={content}>{content}</textarea>
+
+                </div>
+{/*                             
+                            <a id='getRequest' className={rejected} href={downloadURL} download onClick={closeModal} disabled={disabled}>Get Request File</a> */}
                             <DataTable value={comments} header={commentTableHeader}
                                     scrollable scrollHeight="17.48vw"
                                     emptyMessage="No comments found." id='tableOfComments'
                                     paginator rows={5}
-                                    tableStyle={{ minWidth: '2vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
+                                    tableStyle={{ minWidth: '5vw' }} selectionMode="single" onRowSelect={onCommentSelect}>
                                     <Column field="sentBy" header="Sent by"></Column>
                                     <Column field="content" header="Content"></Column>
                                     <Column field="sentDate" header="Date"></Column>
                             </DataTable>
-
-                            <div id="overlay" className = {commentShow} onClick={closeComment}></div>
-                            <div id="deetCommentBody" className ={commentShow}>
-                                <div id='commBod'>
-                                    <p>{commentDate}</p>
- 
-                                    <textarea value={commentContent} disabled={editable} id='commContent' placeholder="Enter comment content..." onChange={(e)=>{setCommentContent(e.target.value)}}/>
-                                    <button id='inAdd' className={buttonShow} onClick={createComment}>Add Comment</button>
-                                </div>
-                            </div>
-
+{/* 
+                            <div id='columnizer'>
+                            <button id='markComplete' className={rejected} onClick={handleComplete} disabled={completeDisable}>Mark as Complete</button>
+                            </div> */}
                 </div>
         </div>
     );

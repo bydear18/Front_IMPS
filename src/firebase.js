@@ -1,6 +1,8 @@
-import firebase from 'firebase/app';
-import 'firebase/storage';
+// Import the necessary Firebase modules
+import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
 
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBTFoXlCEQgrvlFpwyzC4NmjPrKArmXN7c",
     authDomain: "imps-2199c.firebaseapp.com",
@@ -10,9 +12,10 @@ const firebaseConfig = {
     appId: "1:851764140471:web:a774cf0ead8857eb9a3032"
 };
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+// Initialize Firebase app
+const app = initializeApp(firebaseConfig);
 
-var storage = firebase.storage();
+// Get a reference to the storage service
+const storage = getStorage(app);
+
 export default storage;

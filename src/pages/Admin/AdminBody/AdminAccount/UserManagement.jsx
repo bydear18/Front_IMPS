@@ -166,31 +166,8 @@ const UserManagement = () => {
   };
 
   const roleBodyTemplate = (rowData) => {
-    if(rowData.role === 'staff'){
-      return (
-        <div>
-          <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
-            Edit
-          </button>
-          <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
-            Delete
-          </button>
-        </div>
-      );
-    }
-    else if(rowData.role === 'employee' && rowData.adminVerified === true){
-        return (
-          <div>
-            <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
-              Edit
-            </button>
-            <button onClick={() => handleDecline(rowData.email)} className='decline-button'>
-              Delete
-            </button>
-          </div>
-        );
-    }
-    else{
+
+    if(rowData.role === 'employee' && rowData.adminVerified === false){
       return (
         <div>
           <button onClick={() => handleAccept(rowData.email)} className='accept-button'>
@@ -411,7 +388,6 @@ const UserManagement = () => {
                 <Column field="lastName" header="Last Name"></Column>
                 <Column field="email" header="Email"></Column>
                 <Column field="role" header="Role"></Column>
-                <Column field="Action" header="Action" body={roleBodyTemplate}></Column>
             </DataTable>
         </div>
 
